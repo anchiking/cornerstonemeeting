@@ -1,0 +1,1748 @@
+
+<!doctype html>
+<html>
+<head>
+<meta charset=utf-8>
+<link rel='stylesheet' href='./dist/lib/bootstrap/css/bootstrap.css' />
+<link rel='stylesheet'
+	href='./dist/lib/bootstrap/css/bootstrap-responsive.css' />
+<link rel='stylesheet' href='./dist/ui/theme/dark/css/cornerstone.css' />
+<link rel='stylesheet' href='./dist/ui/widget-chart.css' />
+<link rel='stylesheet' href='./dist/ui/widget-media.css' />
+<link rel='stylesheet' href='./dist/ui/widget-scrollview.css' />
+<link rel='stylesheet' href='./dist/ui/widget-datatable.css' />
+<link rel='stylesheet' href='./dist/ui/widget-editor.css' />
+<link rel='stylesheet' href='./etc.css' />
+<style type="text/css">
+body {
+	font-family: dotum;
+	color: #fff;
+	padding-top: 65px;
+	padding-bottom: 15px;
+	padding-left: 15px;
+	padding-right: 15px;
+}
+
+#pictureview {
+	width: 100%;
+	height: 100%;
+}
+
+#pictureview img {
+	width: 100%;
+	height: 100%;
+}
+
+#mapview {
+	width: 100%;
+	height: 100%;
+}
+
+#mapArea {
+	width: 100%;
+	min-height: 530px;
+}
+</style>
+<script src='./dist/lib/jquery-1.8.1.min.js'></script>
+<script src='./dist/ui/widget-chart.js'></script>
+<script src='./dist/ui/widget-datatable.js'></script>
+<script src='./dist/ui/widget-editor.js'></script>
+<script src='./dist/ui/widget-listview.js'></script>
+<script src='./dist/ui/widget-media.js'></script>
+<script src='./dist/ui/widget-plugins.js'></script>
+<script src='./dist/ui/widget-scrollview.js'></script>
+<script type="text/javascript"
+	src="https://maps.google.com/maps/api/js?key=AIzaSyCZpYyGtalKF0oAn_1uy7OCFK9EsrDSS_s&sensor=true&language=ko"></script>
+<script src='./SRT-0.9.js'></script>
+</head>
+
+<body>
+	<!--------------------------------------- 예제 코드 시작 --------------------------------------->
+	
+	<!-- 스플래쉬 스크린 시작 -->
+	<div id="intro">
+			<div class="wrapper"> 
+				<img src="img/bg_intro.jpg" />
+			</div>  
+	</div>
+	<!-- 스플래쉬 스크린 끝 -->
+		
+	<!-- 메인화면 -->
+	<div id="home" style="display: none;">
+		<!-- Navigator area -->
+		<div class="navbar navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+					<a class="btn btn-navbar" data-toggle="collapse"
+						data-target=".nav-collapse"> <i></i></a> <a class="brand" href="#">코너스톤 회의록</a>
+					<div class="nav-collapse" id="nav_home">
+						<ul class="nav">
+							<li><a href="#">종료</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- List area -->
+		<div class="lists" name="mekenote">
+			<ul class="lists-con">
+				<li><a href="#">회의록 생성</a> <i></i></li>
+			</ul>
+		</div>
+
+		<br>
+
+		<div class="lists" name="ago">
+			<header>지난 회의록 (시간순)</header>
+			<ul class="lists-con" name="meetingitems">
+				<!--
+				<li uuid=1><a href="#">skt 코너스톤 기획회의</a><i></i></li>
+				<li uuid=2><a href="#">Tna 2차개발 회의</a><i></i></li>
+			-->
+			</ul>
+		</div>
+
+		<div class="modal fade" id="meetingitemsModal" role="dialog"
+			aria-labelledby="myModalLabel" aria-hidden="true"
+			style="position: absolute;">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">X</button>
+				<h3 id="myModalLabel">회의록 보기</h3>
+			</div>
+			<div class="modal-body">
+				<p>수행할 작업을 선택하세요</p>
+			</div>
+			<div class="modal-footer" style="display: none;"
+				id="meetingitemsModalfooter">
+				<button class="btn btn-primary" data-dismiss="modal"
+					aria-hidden="true" name="viewitem">상세보기</button>
+				<button class="btn btn-danger" data-dismiss="modal"
+					aria-hidden="true" name="deleteitem">회의록 삭제</button>
+			</div>
+		</div>
+
+	</div>
+	<!-- 메인화면끝 -->
+
+	<!-- 등록 뷰  -->
+	<div id="register" style="display: none;">
+
+		<!-- Navigator area -->
+		<div class="navbar navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+					<a class="btn btn-navbar" data-toggle="collapse"
+						data-target=".nav-collapse"> <i></i></a> <a class="brand" href="#"
+						id="meetingnameheader">회의록 생성</a>
+					<div class="nav-collapse" id="nav_register">
+						<ul class="nav">
+							<li name="save"><a href="#">저장</a></li>
+							<li name="cancle"><a href="#">취소</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div>
+			<form class="form-inline" id="register_form">
+				<div class="control-group">
+					<label class="control-label" for="inputSubject">회의 제목 :</label>
+					<div class="controls">
+						<input type="text" id="inputSubject" placeholder="회의 제목을 입력하세요."
+							class="input-large">
+					</div>
+
+					<label class="control-label" for="inputTime">시 간 : </label>
+					<div class="controls">
+						<input type="text" id="inputTime"
+							placeholder="ex)2013.07.05 12:00 PM" class="input-large">
+					</div>
+
+					<label class="control-label" for="inputLocation">장 소 : </label>
+					<div class="controls">
+						<input type="text" id="inputLocation">
+						<button type="button" class="btn btn-success" name="btn_location"
+							style="float: right;">
+							<i class="icon-map-marker icon-white"></i>위치 조회
+						</button>
+					</div>
+
+					<div class="btn-group" style="float: right;">
+						<button type="button" name="btn_picture"
+							class="btn btn-primary btn-large" style="width: 50%;">
+							<i class="icon-camera icon-white"></i> 사진첨부
+						</button>
+						<button type="button" name="btn_audio"
+							class="btn btn-danger btn-large" style="width: 50%;">
+							<i class="icon-volume-up icon-white"></i> 음성녹음
+						</button>
+					</div>
+					<br>
+					<div class="controls">
+						<label class="inline" for="inputBody">내 용 :</label>
+						<textarea id="inputBody" name="substance" rows="10"
+							placeholder="내용을 입력하세요." class="input-large"></textarea>
+					</div>
+					<br>
+					<!-- 섬네일 영역 -->
+					<div id="thumbnailarea">
+						<label class="control-label">음성 파일:</label>
+						<h5 id="voicetext">등록된 음성 파일이 없습니다.</h5>
+						<ul class="thumbnails" name="voice">
+						</ul>
+						<label class="control-label">사진 파일:</label>
+						<h5 id="phototext">등록된 사진 파일이 없습니다.</h5>
+						<ul class="thumbnails" name="photo">
+						</ul>
+					</div>
+
+					<div class="modal fade" id="pictureModal" role="dialog"
+						aria-labelledby="myModalLabel" aria-hidden="true"
+						style="position: absolute;">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"
+								aria-hidden="true">X</button>
+							<h3 id="myModalLabel">사진 첨부</h3>
+						</div>
+						<div class="modal-body">
+							<p>첨부할 방식을 선택하세요</p>
+						</div>
+						<div class="modal-footer" style="display: none;"
+							id="pictureModalfooter">
+							<button class="btn btn-primary" data-dismiss="modal"
+								aria-hidden="true" name="record">촬영</button>
+							<button class="btn btn-danger" data-dismiss="modal"
+								aria-hidden="true" name="gallery">갤러리</button>
+						</div>
+					</div>
+
+					<div class="modal fade" id="pictureViewModal" role="dialog"
+						aria-labelledby="myModalLabel" aria-hidden="true"
+						style="position: absolute;">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"
+								aria-hidden="true">X</button>
+							<h3 id="myModalLabel">사진 파일</h3>
+						</div>
+						<div class="modal-body">
+							<p>수행할 작업을 선택하세요.</p>
+						</div>
+						<div class="modal-footer" style="display: none;"
+							id='pictureViewModalfooter'>
+							<button class="btn btn-primary" data-dismiss="modal"
+								aria-hidden="true" name="pictureview">크게보기</button>
+							<button class="btn btn-danger" data-dismiss="modal"
+								aria-hidden="true" name="pictureremove">삭제</button>
+						</div>
+					</div>
+
+				</div>
+			</form>
+		</div>
+	</div>
+	<!-- 등록 뷰  끝-->
+
+	<!-- 상세보기 뷰 -->
+	<div id="detailsview" style="display: none;">
+		<!-- Navigator area -->
+		<div class="navbar navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+					<a class="btn btn-navbar" data-toggle="collapse"
+						data-target=".nav-collapse"> <i></i></a> <a class="brand" href="#"
+						id="detailsnameheader">회의록 상세보기</a>
+					<div class="nav-collapse" id="nav_details">
+						<ul class="nav">
+							<li name="backtomain"><a href="#">이전</a></li>
+							<li name="sendmail"><a href="#">메일보내기</a></li>
+							<li name="edit"><a href="#">편집</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="details">
+			<label class="control-label">회의 제목 :</label> <input
+				class="input-disa input-large" id="namedetails" type="text"
+				placeholder="회의 제목 들어가기 " disabled> <label
+				class="control-label">시 간 :</label> <input
+				class="input-disa input-large" id="timedetails" type="text"
+				placeholder="등록된 시간 없음" disabled>
+			<button type="button" class="btn btn-success" name="btn_location"
+				style="float: right;">
+				<i class="icon-map-marker icon-white"></i>위치 확인
+			</button>
+			<br>
+			<br> <label class="control-label">장 소:</label> <input
+				class="input-disa input-large" id="locationdetails" type="text"
+				placeholder="등록된 장소 없음" disabled> <label
+				class="control-label">내 용 :</label>
+			<textarea id="inputBody" name="substance" rows="10"
+				placeholder="내용을 입력하세요." class="input-large"></textarea>
+
+			<div id="voicedetails">
+				<label class="control-label">음성 파일 :</label>
+				<div class="middle" style="margin-bottom: 20px;"></div>
+			</div>
+
+			<!-- 섬네일 형태의 이미지 보여주기 
+			<div id="imgdetails">
+				<label class="control-label">사 진 :</label>
+				<div id="detailsthumbnailarea">
+					<ul class="thumbnails">
+					</ul>
+				</div>
+			</div>
+			 -->
+
+
+			<label class="control-label">사 진 :</label>
+			<div class="widget-carousel">
+				<div id="slider" class="carousel slide" data-slide="swipe">
+					<!-- Carousel items -->
+					<div class="carousel-inner" id="imgdetails">
+						<!-- 
+						<div class="active item">
+							<img src="img/curloc.png" alt="">
+							<div class="carousel-caption">
+								<h4>첫번째 이미지 타이틀</h4>
+								<p>첫번째 이미지 설명 텍스트</p>
+							</div>
+						</div>
+						<div class="item">
+							<img src="img/loc.png" alt="">
+							<div class="carousel-caption">
+								<h4>두번째 이미지 타이틀</h4>
+								<p>두번째 이미지 설명 텍스트</p>
+							</div>
+						</div>
+						<div class="item">
+							<img src="images/carousel-03.jpg" alt="">
+							<div class="carousel-caption">
+								<h4>세번째 이미지 타이틀</h4>
+								<p>세번째 이미지 설명 텍스트</p>
+							</div>
+						</div>
+						 -->
+					</div>
+					<!-- Carousel nav -->
+					<a class="carousel-control left" href="#slider" data-slide="prev">‹</a>
+					<a class="carousel-control right" href="#slider" data-slide="next">›</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 상세보기뷰 끝-->
+
+	<!-- 위치 조회 뷰 -->
+	<div id="mapview" style="display: none;">
+		<div id="mapArea"></div>
+	</div>
+	<!-- 위치 조회 뷰 끝-->
+
+	<!-- 사진크게보기 뷰  -->
+	<div id="pictureview" style="display: none;">
+
+		<!-- Navigator area -->
+		<div class="navbar navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+					<a class="btn btn-navbar" data-toggle="collapse"
+						data-target=".nav-collapse"> <i></i></a> <a class="brand" href="#">사진
+						보기</a>
+					<div class="nav-collapse" id="nav_pictureview">
+						<ul class="nav">
+							<li><a href="#">뒤로가기</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="pictureview1">
+			<img id="captureimg" width="100%" height="100%"></img>
+		</div>
+
+	</div>
+	<!-- 사진크게보기 뷰  끝-->
+
+	<!-- 갤러리 뷰  -->
+	<div id="galleryview" style="display: none;">
+
+		<!-- Navigator area -->
+		<div class="navbar navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+					<a class="btn btn-navbar" data-toggle="collapse"
+						data-target=".nav-collapse"> <i></i></a> <a class="brand" href="#">회의록
+						갤러리</a>
+					<div class="nav-collapse" id="nav_galleryview">
+						<ul class="nav">
+							<li><a href="#">뒤로가기</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="galleryList">
+			<!-- <img id="testimgtag" src="./img/loc.png" border=5 style="border-color:#ffff00"></img> -->
+			<div id="gallerythumbnailarea">
+				<ul class="thumbnails">
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!-- 갤러리 뷰  끝-->
+
+	<!---------------------------------------- 예제 코드 끝 ---------------------------------------->
+
+	<script type='text/javascript'>
+		$(function() {
+			function ifrm_resize(height) {
+				var id = 'preview_prv_7';
+				var example1 = window.parent.document.getElementById(id);
+				$(example1).css({
+					height : height + 30
+				});
+			}
+
+			var height = $('body').height();
+			ifrm_resize(height);
+
+			$(window.parent).on('resize', function() {
+				var height = $('body').height();
+				ifrm_resize(height);
+			});
+
+			//util 함수 현재 시간 구하기 
+			function getTimeStamp() {
+				var d = new Date();
+
+				var s = leadingZeros(d.getFullYear(), 4) + '-'
+						+ leadingZeros(d.getMonth() + 1, 2) + '-'
+						+ leadingZeros(d.getDate(), 2) + ' ' +
+
+						leadingZeros(d.getHours(), 2) + ':'
+						+ leadingZeros(d.getMinutes(), 2) + ':'
+						+ leadingZeros(d.getSeconds(), 2);
+
+				return s;
+			}
+
+			function leadingZeros(n, digits) {
+				var zero = '';
+				n = n.toString();
+
+				if (n.length < digits) {
+					for (i = 0; i < digits - n.length; i++)
+						zero += '0';
+				}
+				return zero + n;
+			}
+
+			// String Split 함수
+			function stringSplit(strData, strIndex) {
+				var stringList = new Array();
+				while (strData.indexOf(strIndex) != -1) {
+					stringList[stringList.length] = strData.substring(0,
+							strData.indexOf(strIndex));
+					strData = strData.substring(strData.indexOf(strIndex)
+							+ (strIndex.length), strData.length);
+				}
+				stringList[stringList.length] = strData;
+				return stringList;
+			}
+
+			/**
+			 * 문자를 대체한다.
+			 * @param {Object} str-원문자열
+			 * @param {Object} baseStr-바꿀문자
+			 * @param {Object} repStr-대체할문자
+			 */
+			function replaceAll(str, baseStr, repStr) {
+				var index;
+				while (str.search(baseStr) != -1) {
+					str = str.replace(baseStr, repStr);
+				}
+				return str;
+			}
+
+			// UUID 생성 함수
+			function generateUUID() {
+				var d = new Date().getTime();
+				var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
+						/[xy]/g, function(c) {
+							var r = (d + Math.random() * 16) % 16 | 0;
+							d = Math.floor(d / 16);
+							return (c == 'x' ? r : (r & 0x7 | 0x8))
+									.toString(16);
+						});
+				return uuid;
+			}
+			;
+
+			//preference 
+			function getPreferItems(name) {
+				var items = navigator.preferences.getItem(name);
+				if (items === 'undefined') {
+					return undefined;
+				} else {
+					// item이 존재할 경우 Json Array로 변환한다.
+					return $.parseJSON(items);
+				}
+			}
+
+			// preference item set 함수
+			function setPreferItems(name, json) {
+				var tempArr = getPreferItems(name);
+
+				// 해당 preference가 존재하지 않을 경우 빈 어레이를 생성
+				if (!tempArr)
+					tempArr = new Array;
+
+				tempArr.push(json);
+				navigator.preferences.setItem(name, tempArr);
+			}
+			function removePreferItems(name, id) {
+				var tempArr = getPreferItems(name);
+
+				if (tempArr) {
+					for ( var i in tempArr) {
+						if (tempArr[i].id === id) {
+							tempArr.splice(i, 1);
+						}
+					}
+					navigator.preferences.setItem(name, tempArr);
+				}
+			}
+
+			// 등록화면의 전역변수를 초기화 하는 함수 
+			function resetRegistViewvar() {
+				//이미지 카운트 변수 초기화 
+				gCaptureCnt = 0;
+				gCaptureArray = new Array();
+				gVoice = "";
+
+				$('#meetingnameheader').html('회의록 생성');
+				$('#register_form input[id=inputSubject]').val('');
+				$('#register_form input[id=inputTime]').val('');
+				$('#register_form input[id=inputLocation]').val('');
+				$('#register_form textarea[id=inputBody]').val('');
+				//이미지 동적영역 초기화 
+				$('#thumbnailarea ul[name=photo]').html('');
+				$('#phototext').html('등록된 사진 파일이 없습니다.');
+				$('#thumbnailarea ul[name=voice]').html('');
+				$('#voicetext').html('등록된 음성 파일이 없습니다.');
+				
+				//edit모드 비활성화 
+				gEditmode = false;
+
+			}
+
+			//회의록 등록시의 동적 이미지 리스트 
+			var gCaptureArray = new Array();
+
+			//회의동록 시에 이미지 카은트를 계산하는 변수 
+			var gCaptureCnt = 0;
+			//등록화면에서 보여지는 큰 이미지를 보여지기 위한 변수 
+			var viewpicturename = "";
+			// 전역 보이스 파일 path
+			var gVoice = "";
+			
+			//현재 보여지는 뷰     0 = 메인 , 1 = 등록 , 2 = 상세보기 , 3 = 위치 , 4 = 사진크게보기 , 5 = 갤러리 
+			var currentview = 0;
+			var beforeview = 0;
+
+			// 메인 화면에서 선택된 아이템의 uuid
+			var selectedUUID = "";
+
+			// 메일보내기를 위하여 값을 가진 변수 
+			var mailattachment;
+			
+			var gEditmode = false;
+
+			//show_detailsview();
+
+			function show_main() {
+				currentview = 0;
+				$('#home').show();
+				$('#register').hide();
+				$('#detailsview').hide();
+				$("#mapview").hide();
+				$("#pictureview").hide();
+				$("#galleryview").hide();
+				drawMettingItemarea();
+			}
+
+			function show_register() {			
+				currentview = 1
+				$('#home').hide();
+				$('#register').show();
+				$('#register_form input[id=inputTime]').attr('placeholder',
+						getTimeStamp());
+				$('#detailsview').hide();
+				$("#mapview").hide();
+				$("#pictureview").hide();
+				$("#galleryview").hide();
+			}
+
+			function show_detailsview() {
+				currentview = 2
+				$('#home').hide();
+				$('#register').hide();
+				$('#register_form input[id=inputTime]').attr('placeholder',
+						getTimeStamp());
+				$('#detailsview').show();
+				$("#mapview").hide();
+				$("#pictureview").hide();
+				$("#galleryview").hide();
+			}
+
+			function show_mapview() {
+				beforeview = currentview;
+
+				currentview = 3
+				$('#home').hide();
+				$('#register').hide();
+				$('#detailsview').hide();
+				$("#mapview").show();
+				$("#pictureview").hide();
+				$("#galleryview").hide();
+
+				// 등록뷰에서 넘어왔다면 
+				if (beforeview == 1) {
+					load_map();
+				}
+				// 상세보기 뷰에서 넘어왔따면 
+				else if (beforeview == 2) {
+					var setedloc = $('#details input[id=locationdetails]')
+							.val();
+					detail_map(setedloc);
+				}
+
+			}
+
+			function show_pictureview() {
+				currentview = 4;
+				$('#home').hide();
+				$('#register').hide();
+				$('#detailsview').hide();
+				$("#mapview").hide();
+				$("#pictureview").show();
+				$("#galleryview").hide();
+				var imgDest = document.getElementById("captureimg");
+				imgDest.setAttribute("src", viewpicturename);
+
+				$('#captureimg').on('click', function() {
+					//$("#lageimgviewnav").show();
+				});
+			}
+
+			function show_galleryview() {
+				currentview = 5;
+				$('#home').hide();
+				$('#register').hide();
+				$('#detailsview').hide();
+				$("#mapview").hide();
+				$("#pictureview").hide();
+				$("#galleryview").show();
+
+				initgallery();
+			}
+
+			function savemeetingitem() {
+				//테스트로 저장해 보자 
+				var meetingid = generateUUID();
+				var meetingname = $('#register_form input[id=inputSubject]')
+						.val();
+				var meetingtime = $('#register_form input[id=inputTime]').val();
+				var mettingloc = $('#register_form input[id=inputLocation]')
+						.val();
+				var meetingbody = $('#register_form textarea[id=inputBody]')
+						.val();
+				var meetingimg = gCaptureArray;
+				var meetingvoice = gVoice;
+
+				var meetingitem = new Object;
+				meetingitem.id = meetingid;
+				meetingitem.name = meetingname;
+				meetingitem.time = meetingtime;
+				meetingitem.loc = mettingloc;
+				meetingitem.body = meetingbody;
+				meetingitem.imgs = meetingimg;
+				meetingitem.voice = meetingvoice;
+
+				if (meetingname == "") {
+					alert("회의 제목을 입력해 주세요.");
+				} else if (meetingbody == "") {
+					alert("회의 내용을 입력해 주세요.");
+				} else if (meetingimg.length == 0) {
+					alert("사진을 하나 이상 등록해 주세요.");
+				} else {
+					setPreferItems('meetingData', meetingitem);
+					show_main();
+					//등록 화면을 초기화 한다.
+					resetRegistViewvar();
+				}
+			}
+
+			//[20130801][chisu]view 이동 
+			$('div.lists[name=mekenote] ul li').on('click', function() {
+				show_register();
+			});
+
+			//[20130801][chisu]navi Bar Event
+			$('#nav_home ul li').on('click', function() {
+				navigator.deviceinteraction.exitApp();
+			});
+			$('#nav_register ul li').on('click', function() {
+				if ($(this).attr('name') == "save") {
+					if(gEditmode == true){
+						//편집전의 아이템을 삭제하고 
+						removePreferItems('meetingData', selectedUUID);
+						//새로 생성된 UUID로 아이템을 삽입한다. 
+						savemeetingitem();
+					}
+					else if(gEditmode == false){
+						savemeetingitem();
+					}
+				} else if ($(this).attr('name') == "cancle") {
+					show_main();
+					//등록화면을 초기화 한다. 
+					resetRegistViewvar();
+				}
+			});
+			$('#nav_details ul li').on('click',function() {
+								if ($(this).attr('name') == "backtomain") {
+									show_main();
+								} else if ($(this).attr('name') == "sendmail") {
+									var msg = navigator.messaging
+											.createMessage(Messaging.TYPE_EMAIL);
+
+									msg.body = "회의 제목 : "
+											+ mailattachment.name
+											+ "\n회의 시간 : "
+											+ mailattachment.time
+											+ "\n회의장소 : "
+											+ mailattachment.loc
+											+ "\n"
+											+ "회의내용 : "
+											+ replaceAll(mailattachment.body,
+													"<br/>", "\n");
+									msg.subject = mailattachment.name;
+
+									var audioFile = null;
+									var imagefile = new Array();
+
+									//보이스 파일이 있는 경우 
+									if (mailattachment.voice !== "") {
+										var splitAudioStr = stringSplit(
+												mailattachment.voice, '/');
+										audioFile = new FileEntry(
+												splitAudioStr[splitAudioStr.length - 1],
+												mailattachment.voice);
+									}
+
+									//사진 파일이 있는 경우 
+									if (mailattachment.imgs !== undefined) {
+										for ( var i = 0; i < mailattachment.imgs.length; i++) {
+											var splitImgStr = stringSplit(
+													mailattachment.imgs[i], '/');
+											var tempFile = new FileEntry(
+													splitImgStr[splitImgStr.length - 1],
+													mailattachment.imgs[i]);
+											imagefile.push(tempFile);
+										}
+									}
+
+									if (imagefile.length != 0
+											&& audioFile != null) {
+										imagefile.push(audioFile)
+										msg.attachments = imagefile;
+									} else if (imagefile.length != 0)
+										msg.attachments = imagefile;
+									else if (audioFile != null)
+										msg.attachments = [ audioFile ];
+
+									try {
+										var reval = navigator.messaging
+												.sendMessage(function sc() {
+													//alert( '메일발송이 완료되었습니다.' );
+												}, function ec(err) {
+													alert(err.message)
+												}, msg);
+									} catch (e) {
+										alert(e);
+									}
+								} else if ($(this).attr('name') == "edit") {
+									//alert("todo edit ");
+									show_register();
+									seteditview(selectedUUID);
+								}
+							});
+			$('#nav_pictureview ul li').on('click', function() {
+				show_register();
+			});
+
+			$('#nav_galleryview ul li').on('click', function() {
+				show_register();
+			});
+
+			//[20130801][chisu]regist view button event
+			$('div.btn-group button').on('click', function() {
+				if ($(this).attr('name') == "btn_picture") {
+					$("#pictureModalfooter").show();
+					$("#pictureModal").modal("toggle");
+					//e.preventDefault();
+				} else if ($(this).attr('name') == "btn_audio") {
+					//alert("todo voice recording")
+					captureVoice();
+				}
+			});
+			$('div.controls button[name=btn_location]').on('click', function() {
+				show_mapview();
+			});
+
+			//[20130801][chisu]detail view button event
+			$('#details button[name=btn_location]').on('click', function() {
+				show_mapview();
+			});
+
+			//초기 회의록 리스트를 동적으로 생성하는 함수 
+			function drawMettingItemarea() {
+				//디바이스의 prefrence를 통하여 데이터를 가져 온다. 
+				var listitem = getPreferItems('meetingData');
+
+				//시간 순서대로 정렬 한다
+				if (listitem != undefined)
+					listitem.reverse();
+				
+				//동적으로 리스트의 아이템을 생성한다. 
+				$('div.lists[name=ago] ul').html('');
+				if (listitem != undefined) {
+					var items = '';
+					for (i = 0; i < listitem.length; i++) {
+						items += '<li id="' + listitem[i].id + '"><a href="#">'
+								  + listitem[i].name + '</a><i></i><img src="./img/camera_ok.jpg" align="right"></img>';
+								//+ listitem[i].name + '</a><i></i><img src="./img/camera_ok.jpg" align="right"></img>';
+						
+						//위치 정보가 있다면 아이콘을 활성화 한다. 
+						if(listitem[i].loc != "")
+							items += '<img src="./img/geo_ok.png" align="right"></img>';
+						else 
+							items += '<img src="./img/geo_no.png" align="right"></img>';
+						//음성 정보가 있다면 아이콘을 활성화 한다. 
+						if(listitem[i].voice != "")
+							items += '<img src="./img/voice_ok.jpg" align="right"></img>';
+						else
+							items += '<img src="./img/voice_no.jpg" align="right"></img>';
+							
+						items += "</li>"
+						
+						//alert(items);
+					}
+
+					//회의록 아이템의 클릭 리스너를 생성한다. 
+					$('div.lists[name=ago] ul').append(items);
+					for (i = 0; i < listitem.length; i++) {
+						$('#' + listitem[i].id).on('click', function() {
+							$("#meetingitemsModalfooter").show();
+							$("#meetingitemsModal").modal("toggle");
+
+							//삭제될 아이템 uuid를 세팅해 둔다. modal 이벤트에서 사용되어질 변수다. 
+							selectedUUID = $(this).attr('id');
+						});
+					}
+				}
+			}
+
+			// 등록화면에서 사진 영역을 동적으로 생성하는 함수 
+			function drawRegisterCapturearea(array) {
+				gCaptureCnt = 0;
+				gCaptureArray = new Array();
+
+				//이미지 동적영역 초기화 
+				$('#thumbnailarea ul[name=photo]').html('');
+				for (i = 0; i < array.length; i++) {
+					captureSuccess(array[i]);
+				}
+
+				if (array.length == 0)
+					$('#phototext').html('등록된 사진 파일이 없습니다.');
+			}
+
+			function captureVoiceSC(voicename) {
+				//전역변수에 녹음된 파일의 경로를 저장한다. 
+				gVoice = voicename;
+
+				$('#thumbnailarea ul[name=voice]').html("");
+				$('#voicetext').html("");
+
+				var width = document.getElementById("thumbnailarea").offsetWidth;
+				var thumbWidth = parseInt(width / 3);
+				var imgWidth = thumbWidth - 10;
+
+				var voice = "voice";
+
+				//var thumbnailimage = '<li class="span1" style="width: 110px; height: 70px;"><a href="#" class="thumbnail"> <img id="thumbnail1" style="width: 110px; height: 70px;" src="http://placehold.it/300x200" alt=""></a></li>';
+				var thumbnailimage = '<li class="span1" style="width: ' + thumbWidth +'px; height: 70px;"><a href="#" class="thumbnail"> <img id="'+ voice  +'" style="width: ' +imgWidth + 'px; height: 70px;" src="./img/voice.png" alt=""></a></li>';
+				$('#thumbnailarea ul[name=voice]').append(thumbnailimage);
+
+				//[20130801][chisu]thumbnail view click event
+				$('#' + voice).on('click', function() {
+					alert(gVoice);
+				});
+			}
+			// 오디오 녹음하기 함수 
+			function captureVoice() {
+				function captureVoiceErr(err) {
+					alert("error" + err);
+				}
+				// start audio capture Android , iOS 분리해야 할것 이다. 
+				navigator.capture.captureAudio(captureVoiceSC, captureVoiceErr,
+						{
+							destinationFilename : "audio/aa.wav",
+							highRes : true
+						});
+			}
+
+			//device api 사진 촬영의 성공 콜백 
+			function captureSuccess(filename) {
+				gCaptureCnt++;
+				gCaptureArray.push(filename);
+
+				// 열당 3개의 이미지만 보이도록 한다. 
+				var width = document.getElementById("thumbnailarea").offsetWidth;
+				var thumbWidth = parseInt(width / 3);
+				var imgWidth = thumbWidth - 10;
+
+				var imgid = "img" + gCaptureCnt;
+
+				//var thumbnailimage = '<li class="span1" style="width: 110px; height: 70px;"><a href="#" class="thumbnail"> <img id="thumbnail1" style="width: 110px; height: 70px;" src="http://placehold.it/300x200" alt=""></a></li>';
+				var thumbnailimage = '<li class="span1" style="width: ' + thumbWidth +'px; height: 70px;"><a href="#" class="thumbnail"> <img id="'+ imgid  +'" style="width: ' +imgWidth + 'px; height: 70px;" src=' + filename +' alt=""></a></li>';
+				$('#thumbnailarea ul[name=photo]').append(thumbnailimage);
+				$('#phototext').html("");
+
+				//[20130801][chisu]thumbnail view click event
+				$('#' + imgid).on('click', function() {
+					$("#pictureViewModalfooter").show();
+					$("#pictureViewModal").modal("toggle");
+					viewpicturename = filename;
+				});
+			}
+			// capture error callback
+			function captureError(err) {
+				console.log(err);
+			}
+
+			//[chisu]modal event
+			//회의록 상세보기 호출
+			$('div.modal-footer button[name=viewitem]').on('click', function() {
+				show_detailsview();
+				setdetailview(selectedUUID);
+			});
+			//회의록 지우기 호출
+			$('div.modal-footer button[name=deleteitem]').on('click',
+					function() {
+						function onConfirm3(button) {
+							switch (button) {
+							case 1:
+								//do notthing
+								break;
+							case 2:
+								removePreferItems('meetingData', selectedUUID);
+								show_main();
+								break;
+							}
+						}
+						navigator.notification.confirm('선택한 회의록을 삭제하시겠습니까?', // message
+						onConfirm3, // callback to invoke with index of button pressed
+						'회의록 삭제', // title
+						'아니오 , 예' // buttonLabels
+						);
+					});
+			//사진 활영 
+			$('div.modal-footer button[name=record]').on(
+					'click',
+					function() {
+						var d = new Date();
+						// 20080301103025 표현식
+						var s = leadingZeros(d.getFullYear(), 4)
+								+ leadingZeros(d.getMonth() + 1, 2)
+								+ leadingZeros(d.getDate(), 2)
+								+ leadingZeros(d.getHours(), 2)
+								+ leadingZeros(d.getMinutes(), 2)
+								+ leadingZeros(d.getSeconds(), 2) + ".png";
+
+						var imgnamepath = "file://mnt/sdcard/cornerstone/" + s;
+
+						navigator.capture.captureImage(captureSuccess,
+								captureError, {
+									destinationFilename : imgnamepath
+								});
+					});
+
+			//갤러리 호출
+			$('div.modal-footer button[name=gallery]').on('click', function() {
+				//navigator.vibrate(1000);
+				show_galleryview();
+			});
+			//사진 크게보기 
+			$('div.modal-footer button[name=pictureview]').on('click',
+					function() {
+						show_pictureview();
+					});
+			//사진 삭제 
+			$('div.modal-footer button[name=pictureremove]').on(
+					'click',
+					function() {
+						function onDeleteConfirm(button) {
+							switch (button) {
+							case 1:
+								//do notthing
+								break;
+							case 2:
+								//사진 리스트를 관리하는 전역 배열에서 선택된 사진을 삭제 
+								gCaptureArray.splice(gCaptureArray
+										.indexOf(viewpicturename), 1);
+
+								drawRegisterCapturearea(gCaptureArray);
+								break;
+							}
+						}
+						navigator.notification.confirm('등록된 사진을 삭제 하시겠습니까?', // message
+						onDeleteConfirm, // callback to invoke with index of button pressed
+						'등록된 사진 삭제', // title
+						'아니오 , 예' // buttonLabels
+						);
+					});
+
+			//회의록 편집 뷰 
+			function seteditview(UUID) {
+				gEditmode = true;
+				var detailUUID = UUID;
+				var listitem = getPreferItems('meetingData');
+				if (listitem) {
+					//등록되어 있는 회의록 중에서 선택된 아이템을 찾는다. 
+					for ( var i in listitem) {
+						if (listitem[i].id === detailUUID) {
+							var editItem = listitem[i];
+							$('#meetingnameheader').html(editItem.name);
+							$('#register_form input[id=inputSubject]').val(
+									editItem.name);
+							$('#register_form input[id=inputTime]').val(
+									editItem.time);
+							$('#register_form input[id=inputLocation]').val(
+									editItem.loc);
+							$('#register_form textarea[id=inputBody]').val(
+									editItem.body);
+							
+							//alert(editItem.imgs);
+							//alert(editItem.voice);
+							
+							drawRegisterCapturearea(editItem.imgs);
+							if(editItem.voice != ""){
+								captureVoiceSC(editItem.voice);
+							}
+						}
+					}
+				}
+			}
+
+			//회의록 상세보기 초기화 
+			function setdetailview(UUID) {
+				var detailUUID = UUID;
+				var listitem = getPreferItems('meetingData');
+				if (listitem) {
+					//등록되어 있는 회의록 중에서 선택된 아이템을 찾는다. 
+					for ( var i in listitem) {
+						if (listitem[i].id === detailUUID) {
+							//보낼 메일에 변수를 설정한다. 
+							mailattachment = listitem[i];
+							$('#detailsnameheader').html(listitem[i].name);
+							$('#details input[id=namedetails]').val(
+									listitem[i].name);
+							$('#details input[id=timedetails]').val(
+									listitem[i].time);
+							$('#details input[id=locationdetails]').val(
+									listitem[i].loc);
+							$('#details textarea[id=inputBody]').val(
+									listitem[i].body);
+
+							// 이미지 파일이 존재 한다면 
+							if (listitem[i].imgs != undefined) {
+								$('#imgdetails').html('');
+								for (j = 0; j < listitem[i].imgs.length; j++) {
+									var imgnum = j + 1;
+									if (j == 0) {
+										var thumbnailimage = '<div class="item active"><img src="' + listitem[i].imgs[j] + '" alt=""><div class="carousel-caption"><p align="center">('
+												+ imgnum
+												+ '/'
+												+ listitem[i].imgs.length
+												+ ') 번째 이미지</p></div></div>';
+										$('#imgdetails').append(thumbnailimage);
+									} else {
+										var thumbnailimage = '<div class="item"><img src="' + listitem[i].imgs[j] + '" alt=""><div class="carousel-caption"><p align="center">('
+												+ imgnum
+												+ '/'
+												+ listitem[i].imgs.length
+												+ ') 번째 이미지</p></div></div>';
+										$('#imgdetails').append(thumbnailimage);
+									}
+
+								}
+								//var slider = '<a class="carousel-control left" href="#slider" data-slide="prev">‹</a><a class="carousel-control right" href="#slider" data-slide="next">›</a>';
+								//$('#slider').append(slider)
+							}
+
+							// 오디오 파일이 존재 한다면 
+							$('#voicedetails div.middle').html('');
+							if (listitem[i].voice != "") {
+								var audio = $('<div></div>', {
+									id : 'audio'
+								}).css({
+									'width' : '100%',
+									'margin-top' : '20px'
+								});
+								var btnGroup = $('<div></div>', {
+									'class' : 'btn-group'
+								});
+								var btnPlay = $('<button></button>', {
+									name : 'btn_audio_play',
+									'class' : 'btn btn-success'
+								})
+										.css({
+											'width' : '50%'
+										})
+										.html(
+												'<i class="icon-play icon-white"></i> 재생');
+								var btnPause = $('<button></button>', {
+									name : 'btn_audio_pause',
+									'class' : 'btn btn-warning'
+								})
+										.css({
+											'width' : '50%'
+										})
+										.html(
+												'<i class="icon-pause icon-white"></i> 정지');
+
+								navigator.mediamanager
+										.createAudio(
+												function(media) {
+													currentAudio = media;
+													var timmer;
+													audio
+															.html('<div></div><div class="progress progress-warning active"><div class="bar" style="width: 0%;"></div></div>');
+													//audio.html( '<input id="rangeInput" type="range" value="10" min="0" max="100" class="widget-range btn-block inline" />' );
+
+													btnPlay
+															.on(
+																	'click',
+																	function() {
+																		currentAudio
+																				.play();
+																		timmer = setInterval(
+																				function() {
+																					currentAudio
+																							.getCurrentPosition(function(
+																									position) {
+																								var rate = position
+																										/ currentAudio
+																												.getDuration()
+																										* 100;
+																								// 여기랑 
+																								$(
+																										'#voicedetails div.bar')
+																										.css(
+																												{
+																													'width' : rate
+																															+ '%'
+																												});
+																								if (position < 0)
+																									clearInterval(timmer);
+																							});
+																				},
+																				100);
+																	});
+
+													btnPause
+															.on(
+																	'click',
+																	function() {
+																		currentAudio
+																				.pause();
+																		clearInterval(timmer);
+
+																	});
+
+													btnGroup.append(btnPlay);
+													btnGroup.append(btnPause)
+													audio.append(btnGroup);
+
+													//여기를 수정한다. 
+													$(
+															'#voicedetails div.middle')
+															.append(audio);
+												}, function(err) {
+													console.log('음원 찾기 실패: '
+															+ err.message);
+												}, listitem[i].voice);
+							}
+							//등록된 오디오 파일이 없으면 
+							else {
+								var noaudiotext = '<h5>등록된 음성 파일이 없습니다.</h5>';
+								$('#voicedetails div.middle').append(
+										noaudiotext);
+							}
+						}
+					}
+				}
+			}
+
+			// 지도 관련 로직 
+			var map;
+			var geocoder;
+			var marker;
+
+			// 맵로드
+			function addMarker(loc, address) {
+				//기존에 선택된 마커는 지운다.
+				if (marker != undefined)
+					marker.setMap(null);
+
+				var new_loc;
+				var opt = {
+					'region' : 'ko'
+				};
+
+				if (address) {
+					opt.address = address;
+				} else {
+					opt.latLng = loc;
+				}
+
+				// latLng 정보를 기준으로 해당 위치의 주소를 가져옴 
+				geocoder
+						.geocode(
+								opt,
+								function(results, status) {
+									if (status == google.maps.GeocoderStatus.OK) {
+										if (results[0]) {
+											var addr = results[0].formatted_address;
+											if (address) {
+												new_loc = new google.maps.LatLng(
+														results[0].geometry.location.Xa,
+														results[0].geometry.location.Ya);
+											} else {
+												new_loc = loc;
+											}
+											// marker 생성
+											marker = new google.maps.Marker({
+												position : new_loc,
+												map : map,
+												icon : 'img/loc.png'
+											});
+											// marker 선택 시 해당 위치를 지정하겠는지 질의
+											google.maps.event
+													.addListener(
+															marker,
+															'click',
+															function() {
+																if (confirm(addr
+																		+ '\n 해당 위치를 지정 하시겠습니까?')) {
+																	show_register();
+																	$(
+																			'#register_form input[id=inputLocation]')
+																			.val(
+																					addr);
+																}
+															});
+											map.setCenter(new_loc);
+										}
+									}
+								});
+			}
+
+			//현재 위치 버튼 동적으로 추가
+			function CurrentLocControl(controlDiv, map) {
+				controlDiv.style.padding = '5px';
+
+				// Set CSS for the control interior
+				var controlBtn = document.createElement('div');
+				controlBtn.style.paddingLeft = '4px';
+				controlBtn.style.paddingRight = '4px';
+				controlBtn.innerHTML = '<button class="btn btn-primary"><i class="icon-map-marker icon-white"></i></button>';
+				//controlBtn.innerHTML = '<img src="./img/curloc.png"></img>';
+				controlDiv.appendChild(controlBtn);
+
+				// Setup the click event listeners: simply set the map to
+				google.maps.event.addDomListener(controlDiv, 'click',
+						function() {
+							function positionSC(pos) {
+								var latlng = new google.maps.LatLng(
+										pos.coords.latitude,
+										pos.coords.longitude);
+								map.setCenter(latlng);
+								//addMarker(latlng);
+							}
+							function positionEC() {
+
+							}
+							navigator.geolocation.getCurrentPosition(
+									positionSC, positionEC, {
+										timeout : 20 * 1000,
+										enableHighAccuracy : true
+									});
+						});
+			}
+
+			//위치 찾기 버튼 동적으로 추가
+			function SearchLocControl(controlDiv, map) {
+				controlDiv.style.padding = '5px';
+				
+				var searchinput = document.createElement('div');
+				searchinput.innerHTML = '<input type="text" class="input-medium search-query" id="searchmaptext">';
+				
+				var searchbtn = document.createElement('button');
+				var txt1 = document.createTextNode("찾기");
+				searchbtn.appendChild(txt1);
+				searchbtn.setAttribute('id', 'mybtn');
+				searchbtn.setAttribute('type', 'button');
+				searchbtn.setAttribute('class', 'btn btn-primary');
+				
+				searchinput.appendChild(searchbtn);
+				controlDiv.appendChild(searchinput);
+				
+				//찾기 버튼이 클릭되었다면 
+				google.maps.event.addDomListener(searchbtn, 'click',
+						function() {
+							var opt = {
+									'region' : 'ko',
+									address : $("#searchmaptext").val()
+								};
+								var loc;
+								geocoder = new google.maps.Geocoder();
+								geocoder.geocode(opt, function(results, status) {
+									if (status == google.maps.GeocoderStatus.OK) {
+										if (results[0]) {
+											var address = results[0].formatted_address;
+											if (address) {
+												//loc = new google.maps.LatLng( results[0].geometry.location.Xa, results[0].geometry.location.Ya );
+												loc = results[0].geometry.location;
+											} else {
+												alert('위치 조회에 실패하였습니다.');
+												return false;
+											}
+											//현재 맵의 중심만 바꾸면 된다. 
+											map.setCenter(loc);
+										}
+									} else {
+										alert("Google Map 에서 지원하는 주소체계가 아닙니다.");
+									}
+								});
+						});
+			}
+			
+			//등록화면에서 불려지는 초기 위치 정보 함수 
+			function load_map() {
+
+				navigator.geolocation.getCurrentPosition(function(pos) {
+					geocoder = new google.maps.Geocoder();
+
+					var latlng = new google.maps.LatLng(pos.coords.latitude,
+							pos.coords.longitude);
+					var mapOpt = {
+						zoom : 18,
+						center : latlng,
+						mapTypeId : google.maps.MapTypeId.ROADMAP
+					};
+
+					map = new google.maps.Map(document
+							.getElementById('mapArea'), mapOpt);
+
+					map.selectFlag = false;
+
+					google.maps.event.addListener(map, 'click',
+							function(event) {
+								addMarker(event.latLng);
+							});
+
+					var currentLocDiv = document.createElement('div');
+					var currentLoc = new CurrentLocControl(currentLocDiv, map);
+
+					currentLocDiv.index = 1;
+					map.controls[google.maps.ControlPosition.TOP_LEFT].push(currentLocDiv);
+					
+					var searchLocDiv = document.createElement('div');
+					var searchLoc = new SearchLocControl(searchLocDiv, map);
+
+					searchLocDiv.index = 1;
+					map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(searchLocDiv);
+
+				}, function(err) {
+					console.log(err);
+					alert('api err : ' + err.message);
+				}, {
+					timeout : 10 * 1000,
+					enableHighAccuracy : true
+				});
+
+			}
+
+			//회의록 상세 보기에서 보여지는 함수 
+			function detail_map(addr) {
+				var opt = {
+					'region' : 'ko',
+					address : addr
+				};
+				var loc;
+				geocoder = new google.maps.Geocoder();
+				geocoder.geocode(opt, function(results, status) {
+					if (status == google.maps.GeocoderStatus.OK) {
+						if (results[0]) {
+
+							var address = results[0].formatted_address;
+
+							if (address) {
+								//loc = new google.maps.LatLng( results[0].geometry.location.Xa, results[0].geometry.location.Ya );
+								loc = results[0].geometry.location;
+							} else {
+								alert('위치 조회에 실패하였습니다.');
+								return false;
+							}
+
+							map = new google.maps.Map(document
+									.getElementById('mapArea'), {
+								zoom : 18,
+								center : loc,
+								mapTypeId : google.maps.MapTypeId.ROADMAP
+							});
+
+							var marker = new google.maps.Marker({
+								position : loc,
+								map : map,
+								icon : 'img/loc.png'
+							});
+						}
+					} else {
+						alert("Google Map 에서 지원하는 주소체계가 아닙니다.");
+						show_detailsview();
+					}
+				});
+			}
+
+			
+			
+			// 갤러리 관련 로직 
+			var gGallerySelect = new Array(); // 선택되어있는지 여부 저장 
+
+			// 갤ㄹ리 파일리스트를 얻어왔을 때 불리는 콜백 
+			function gallerylistsuccess(entries) {
+				//초기 갤러리 진입시에 기존화면은 빈칸이다. 
+				$('#gallerythumbnailarea ul').html("");
+				var i;
+				for (i = 0; i < entries.length; i++) {
+					console.log(entries[i].name);
+				}
+
+				var galleryList = new Array();
+				var len = entries.length;
+				for (j = 0; j < len; j++) {
+					if (entries[j].isFile) {
+						galleryList.push({
+							name : entries[j].name,
+							fullpath : entries[j].fullPath
+						});
+					}
+				}
+				galleryList.sort();
+
+				// 열당 3개의 이미지만 보이도록 한다. 
+				var width = document.getElementById("galleryList").offsetWidth;
+				var thumbWidth = parseInt(width / 3);
+				var imgWidth = thumbWidth - 10;
+
+				var thumbnailimage = "";
+				var imgid = "galleryimg";
+
+				//웹앱 폴더내에 이미지 데이터가 있을 시에 동적인 갤러리 이미지를 만든다. 
+				for ( var i = 0; i < galleryList.length; i++) {
+					imgid = imgid + i;
+					if (!gGallerySelect[i]) {
+						thumbnailimage += '<li class="span4" style="width:' + thumbWidth + 'px; height: 70px;"><a class="thumbnail"><img id="'+ imgid  +'" style="width:' + imgWidth +'px; height: 70px;" src=' + galleryList[i].fullpath +' alt=""></a></li>';
+						imgid = "galleryimg";
+					} else {
+
+					}
+				}
+
+				//alert(thumbnailimage);
+				// 동적으로 갤러리 리스트를 만든다. 
+				$('#gallerythumbnailarea ul').append(thumbnailimage);
+
+				for ( var i = 0; i < galleryList.length; i++) {
+					imgid = imgid + i
+
+					//[20130801][chisu]갤러리에서 특정 이미지를 선택했을때 불리는 함수 
+					$('#' + imgid).on(
+							'click',
+							function() {
+								var tempselectimg = $(this).attr('src');
+								function onSelectImg(button) {
+									switch (button) {
+									case 1:
+										//do notthing
+										break;
+									case 2:
+										show_register();
+										captureSuccess(tempselectimg);
+										break;
+									}
+								}
+								navigator.notification.confirm(tempselectimg
+										+ ' 경로의 사진을 등록하시겠습니까?', // message
+								onSelectImg, // callback to invoke with index of button pressed
+								'사진 선택', // title
+								'아니오 , 예' // buttonLabels
+								);
+							});
+					imgid = "galleryimg";
+				}
+
+			}
+
+			function SelectPhoto(num, file) {
+				if (gGallerySelect[num]) {
+					gGallerySelect[num] = false;
+				} else {
+					gGallerySelect[num] = file.replace("widget://", "");
+				}
+
+				//refreshGalleryList();
+			}
+
+			//갤러리 초기화 
+			function initgallery() {
+				function onFileSystemSuccess(rootDir) {
+					function dirmakesuccess(direntry) {
+						//alert(direntry.fullPath);
+
+						function fail(error) {
+							alert("Failed to list directory contents: "
+									+ error.code);
+						}
+
+						// Get a directory reader
+						var directoryReader = direntry.createReader();
+						// Get a list of all the entries in the directory
+						directoryReader.readEntries(gallerylistsuccess, fail);
+					}
+					function dirmakeerror(error) {
+						alert(error);
+					}
+					rootDir.root.getDirectory("cornerstone", {
+						create : true,
+						exclusive : false
+					}, dirmakesuccess, dirmakeerror);
+				}
+				function requestfilesystemerror() {
+				}
+
+				window.requestFileSystem(LocalFileSystem.PERSISTENT, 0,
+						onFileSystemSuccess, requestfilesystemerror);
+			}
+
+			// 초기 파일 디렉토리를 만든다. 
+			function makemeetingdir() {
+				function onFileSystemSuccess(rootDir) {
+					function dirmakesuccess(direntry) {
+					}
+					function dirmakeerror(error) {
+						alert(error);
+					}
+					// Retrieve an existing directory, or create it if it does not already exist
+					rootDir.root.getDirectory("cornerstone", {
+						create : true,
+						exclusive : false
+					}, dirmakesuccess, dirmakeerror);
+				}
+				function requestfilesystemerror() {
+
+				}
+
+				window.requestFileSystem(LocalFileSystem.PERSISTENT, 0,
+						onFileSystemSuccess, requestfilesystemerror);
+			}
+
+			//물리 백버튼관련 기능 
+			document.addEventListener("deviceready", onDeviceReady, false);
+
+			function onBackKeyDown() {
+				//현재 보여지는 뷰     0 = 메인 , 1 = 등록 , 2 = 편집 , 3 = 위치 , 4 = 사진크게보기 , 5 = 갤러리 
+				if (currentview == 0) {
+					function onConfirm0(button) {
+						switch (button) {
+						case 1:
+							//do notthing
+							break;
+						case 2:
+							navigator.deviceinteraction.exitApp();
+							break;
+						}
+					}
+					navigator.notification.confirm('앱을 종료하시겠습니까?', // message
+					onConfirm0, // callback to invoke with index of button pressed
+					'종료', // title
+					'취소 , 종료' // buttonLabels
+					);
+				} else if (currentview == 1) {
+					if(gEditmode==true){
+						function onConfirm1_1(button) {
+							switch (button) {
+							case 1:
+								//do notthing
+								break;
+							case 2:
+								show_main();
+								//등록화면을 초기화 한다. 
+								resetRegistViewvar();
+								break;
+							}
+						}
+						navigator.notification.confirm('저장되지 않은 변경사항이 있습니다.\n홈으로 이동하시겠습니까?', // message
+						onConfirm1_1, // callback to invoke with index of button pressed
+						'회의록 편집', // title
+						'아니오 , 예' // buttonLabels
+						);
+					}
+					else if(gEditmode == false){
+						function onConfirm1(button) {
+							switch (button) {
+							case 1:
+								//do notthing
+								break;
+							case 2:
+								show_main();
+								//등록화면을 초기화 한다. 
+								resetRegistViewvar();
+								break;
+							}
+						}
+						navigator.notification.confirm('회의록 등록을 취소하시겠습니까?', // message
+						onConfirm1, // callback to invoke with index of button pressed
+						'회의록 등록', // title
+						'아니오 , 예' // buttonLabels
+						);
+					}
+				} else if (currentview == 2) {
+					function onConfirm2(button) {
+						switch (button) {
+						case 1:
+							//do notthing
+							break;
+						case 2:
+							show_main();
+							break;
+						}
+					}
+					navigator.notification.confirm('회의록 보기를 취소하시겠습니까?', // message
+					onConfirm2, // callback to invoke with index of button pressed
+					'회의록 상세보기', // title
+					'아니오 , 예' // buttonLabels
+					);
+
+				} else if (currentview == 3) {
+					if (beforeview == 1) {
+						function onConfirm3(button) {
+							switch (button) {
+							case 1:
+								//do notthing
+								break;
+							case 2:
+								show_register();
+								break;
+							}
+						}
+						navigator.notification.confirm('지도등록을 취소하시겠습니까?', // message
+						onConfirm3, // callback to invoke with index of button pressed
+						'지도 등록', // title
+						'아니오 , 예' // buttonLabels
+						);
+					} else if (beforeview == 2) {
+						function onConfirm3_1(button) {
+							switch (button) {
+							case 1:
+								//do notthing
+								break;
+							case 2:
+								show_detailsview();
+								break;
+							}
+						}
+						navigator.notification.confirm('이전 화면으로 돌아가시겠습니까?', // message
+						onConfirm3_1, // callback to invoke with index of button pressed
+						'위치 확인', // title
+						'아니오 , 예' // buttonLabels
+						);
+					}
+
+				} else if (currentview == 4) {
+					show_register();
+				} else if (currentview == 5) {
+					function onConfirm5(button) {
+						switch (button) {
+						case 1:
+							//do notthing
+							break;
+						case 2:
+							show_register();
+							break;
+						}
+					}
+					navigator.notification.confirm('사진등록을 취소하시겠습니까?', // message
+					onConfirm5, // callback to invoke with index of button pressed
+					'사진 등록', // title
+					'아니오 , 예' // buttonLabels
+					);
+				}
+			}
+
+			
+		function onDeviceReady() {
+				console.log("deviceready");
+
+				//사진등을 저장할 공간을 만든다.
+				makemeetingdir();
+
+				// 초기 회의록 화면 보이기
+				setTimeout(function() {
+					$('#intro').hide();
+					
+					//push를 통하여 앱이 실행 되었을 때의 처리 
+					var currenturl = navigator.getCurrentURL();
+					var arglist = currenturl.split("?");
+					if(arglist.length > 1){
+						var firstarg = arglist[1].split("=")[1];
+						//var secondarg = arglist[2].split("=")[1];
+						//push를 통해서 왔다면 바로 등록화면으로 간다. 
+						if (firstarg == "push")
+							show_register();
+					}
+					//default인 경우에는 기존 등록된 리스트를 보여준다. 
+					else
+						show_main();
+					
+				}, 1500);
+				
+				document.addEventListener("backbutton", onBackKeyDown, false);
+			}
+
+		});
+	</script>
+</body>
+</html>

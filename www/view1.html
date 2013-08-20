@@ -1,0 +1,107 @@
+
+<!doctype html>
+<html>
+<head>
+<meta charset=utf-8>
+<link rel='stylesheet' href='./dist/lib/bootstrap/css/bootstrap.css' />
+<link rel='stylesheet'
+	href='./dist/lib/bootstrap/css/bootstrap-responsive.css' />
+<link rel='stylesheet' href='./dist/ui/theme/dark/css/cornerstone.css' />
+<link rel='stylesheet' href='./dist/ui/widget-chart.css' />
+<link rel='stylesheet' href='./dist/ui/widget-media.css' />
+<link rel='stylesheet' href='./dist/ui/widget-scrollview.css' />
+<link rel='stylesheet' href='./dist/ui/widget-datatable.css' />
+<link rel='stylesheet' href='./dist/ui/widget-editor.css' />
+<link rel='stylesheet' href='./etc.css' />
+<script src='./dist/lib/jquery-1.8.1.min.js'></script>
+<script src='./dist/ui/widget-chart.js'></script>
+<script src='./dist/ui/widget-datatable.js'></script>
+<script src='./dist/ui/widget-editor.js'></script>
+<script src='./dist/ui/widget-listview.js'></script>
+<script src='./dist/ui/widget-media.js'></script>
+<script src='./dist/ui/widget-plugins.js'></script>
+<script src='./dist/ui/widget-scrollview.js'></script>
+<script src='./SRT-0.9.js'></script>
+</head>
+
+<body
+	style='padding-top: 15px; padding-bottom: 15px; padding-left: 15px; padding-right: 15px;'>
+
+	<!--------------------------------------- 예제 코드 시작 --------------------------------------->
+
+	<div class="page-header">
+		<h1>
+			SKT Runtime<small>중간보고</small>
+		</h1>
+	</div>
+	<div class="hero-unit">
+		<h1>Runtime 중간보고</h1>
+		<p>
+			Custom URL 테스트 입니다. <br>아래 버튼을 눌러 숨겨져 오는 메세지를 확인할 수 있습니다. 
+		</p>
+		<!-- <p> CutomURL을 통한 웹앱 실행 <br>아래 버튼을 눌러 숨겨져 오는 메세지를 확인 할 수 있습니다.</p> -->
+	</div>
+	<button class="btn" data-toggle="modal" data-target="#myModal"
+		style="margin: 10px">메세지 확인하기</button>
+	<div class="modal fade" id="myModal" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true"
+		style="position: absolute;">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"
+				aria-hidden="true">×</button>
+			<h3 id="myModalLabel">Modal header</h3>
+		</div>
+		<div class="modal-body">
+			<p>One fine body…</p>
+		</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+		</div>
+	</div>
+
+	<!---------------------------------------- 예제 코드 끝 ---------------------------------------->
+
+	<script type='text/javascript'>
+		$(function() {
+			function ifrm_resize(height) {
+				var id = 'preview_prv_1';
+				var example1 = window.parent.document.getElementById(id);
+				$(example1).css({
+					height : height + 30
+				});
+			}
+
+			var height = $('body').height();
+			ifrm_resize(height);
+
+			$(window.parent).on('resize', function() {
+				var height = $('body').height();
+				ifrm_resize(height);
+			});
+		});
+
+		function showContent(firstarg, secondarg) {
+			$('div.modal-header h3').html(firstarg);
+			$('div.modal-body p').html(secondarg);
+		}
+
+		function onDeviceReady() {
+			//alert(location.href);
+			var currenturl = navigator.getCurrentURL();
+			var arglist = currenturl.split("?");
+			var firstarg = arglist[1].split("=")[1];
+			var secondarg = arglist[2].split("=")[1];
+
+			showContent(firstarg, secondarg);
+		}
+
+		document.addEventListener("deviceready", onDeviceReady, false);
+
+		//$( 'div.hero-unit ' ).html('');
+		//$( 'div.hero-unit ' ).append('<h1>테스트다1</h1>');
+		//$( 'div.hero-unit ' ).append( "<p>테스트다</p>");
+		//$( 'div.hero-unit p' ).html( "아오썅");
+	</script>
+
+</body>
+</html>

@@ -1,0 +1,255 @@
+
+<!doctype html>
+<html>
+<head>
+<meta charset=utf-8>
+<link rel='stylesheet' href='./dist/lib/bootstrap/css/bootstrap.css' />
+<link rel='stylesheet'
+	href='./dist/lib/bootstrap/css/bootstrap-responsive.css' />
+<link rel='stylesheet' href='./dist/ui/theme/dark/css/cornerstone.css' />
+<link rel='stylesheet' href='./dist/ui/widget-chart.css' />
+<link rel='stylesheet' href='./dist/ui/widget-media.css' />
+<link rel='stylesheet' href='./dist/ui/widget-scrollview.css' />
+<link rel='stylesheet' href='./dist/ui/widget-datatable.css' />
+<link rel='stylesheet' href='./dist/ui/widget-editor.css' />
+<link rel='stylesheet' href='./etc.css' />
+<script src='./dist/lib/jquery-1.8.1.min.js'></script>
+<script src='./dist/ui/widget-chart.js'></script>
+<script src='./dist/ui/widget-datatable.js'></script>
+<script src='./dist/ui/widget-editor.js'></script>
+<script src='./dist/ui/widget-listview.js'></script>
+<script src='./dist/ui/widget-media.js'></script>
+<script src='./dist/ui/widget-plugins.js'></script>
+<script src='./dist/ui/widget-scrollview.js'></script>
+<script src='./SRT-0.9.js'></script>
+</head>
+
+<body
+	style='padding-top: 15px; padding-bottom: 15px; padding-left: 15px; padding-right: 15px;'>
+
+	<!--------------------------------------- 예제 코드 시작 --------------------------------------->
+	<div id="intro" style="display: none;">
+		<div class="wrapper">
+			<img src="img/bg_intro.jpg" />
+		</div>
+	</div>
+
+	<div id="main" class="container">
+		<h3>회의록 리스트</h3>
+		<div class="lists" name="ago">
+			<header>지난 회의록</header>
+			<ul class="lists-con">
+				<li uuid=1><a href="#">skt 코너스톤 기획회의</a> 
+				<!-- <img src="./img/K-2.jpg"><i></i></li> -->
+				<li uuid=2><a href="#">Tna 2차개발 회의</a> <i></i></li>
+			</ul>
+		</div>
+		<br>
+		<div class="lists" name="future">
+			<header>예정된 회의록</header>
+			<ul class="lists-con">
+				<li><a href="./view1.html">차주 주례보고</a> <i></i></li>
+			</ul>
+		</div>
+		<br>
+		<form class="form-horizontal">
+			<div class="control-group">
+				<button type="button" name="btn_typealert"
+					class="btn btn-primary btn-block">Type alert</button>
+			</div>
+
+			<div class="control-group">
+				<button type="button" name="btn_typebanner"
+					class="btn btn-danger btn-block">Type banner</button>
+			</div>
+		</form>
+		
+	</div>
+
+	<div class="content" name="register" style="display: none;">
+
+		<ul class="breadcrumb">
+			<li><a href="#">Home</a> <span class="divider">/</span></li>
+			<li><a href="#">Library</a> <span class="divider">/</span></li>
+			<li class="active">Data</li>
+		</ul>
+
+		<div class="dash-widget no-padding">
+			<div class="accordion" id="accordion1">
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<a class="accordion-toggle" data-toggle="collapse"
+							data-parent="#accordion1" href="#collapseTest"> 사진 </a>
+					</div>
+					<div id="collapseTest" class="accordion-body collapse in">
+						<div class="accordion-inner">
+							<div class="widget-carousel">
+								<div id="slider" class="carousel slide" data-slide="swipe">
+									<!-- Carousel items -->
+									<div class="carousel-inner">
+										<div class="active item">
+											<img src="./img/K-2.jpg" alt="">
+											<div class="carousel-caption">
+												<h4>첫번째 이미지 타이틀</h4>
+												<p>첫번째 이미지 설명 텍스트</p>
+											</div>
+										</div>
+										<div class="item">
+											<img src="./img/K-2.jpg" alt="">
+											<div class="carousel-caption">
+												<h4>두번째 이미지 타이틀</h4>
+												<p>두번째 이미지 설명 텍스트</p>
+											</div>
+										</div>
+										<div class="item">
+											<img src="./img/K-2.jpg" alt="">
+											<div class="carousel-caption">
+												<h4>세번째 이미지 타이틀</h4>
+												<p>세번째 이미지 설명 텍스트</p>
+											</div>
+										</div>
+									</div>
+									<!-- Carousel nav -->
+									<a class="carousel-control left" href="#slider"
+										data-slide="prev">‹</a> <a class="carousel-control right"
+										href="#slider" data-slide="next">›</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="dash-widget no-padding">
+			<div class="accordion" id="accordion2">
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<a class="accordion-toggle" data-toggle="collapse"
+							data-parent="#accordion2" href="#collapseOne"> Collapsible
+							Group Item #1 </a>
+					</div>
+					<div id="collapseOne" class="accordion-body collapse in">
+						<div class="accordion-inner">Anim pariatur cliche
+							reprehenderit, enim eiusmod high life accusamus terry richardson
+							ad squid. 3 wolf moon officia aute, non cupidatat skateboard
+							dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch
+							3 wolf moon tempor, sunt aliqua put a bird on it squid
+							single-origin coffee nulla assumenda shoreditch et. Nihil anim
+							keffiyeh helvetica, craft beer labore wes anderson cred nesciunt
+							sapiente ea proident. Ad vegan excepteur butcher vice lomo.
+							Leggings occaecat craft beer farm-to-table, raw denim aesthetic
+							synth nesciunt you probably haven’t heard of them accusamus
+							labore sustainable VHS.</div>
+					</div>
+				</div>
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<a class="accordion-toggle" data-toggle="collapse"
+							data-parent="#accordion2" href="#collapseTwo"> Collapsible
+							Group Item #2 </a>
+					</div>
+					<div id="collapseTwo" class="accordion-body collapse">
+						<div class="accordion-inner">Anim pariatur cliche
+							reprehenderit, enim eiusmod high life accusamus terry richardson
+							ad squid. 3 wolf moon officia aute, non cupidatat skateboard
+							dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch
+							3 wolf moon tempor, sunt aliqua put a bird on it squid
+							single-origin coffee nulla assumenda shoreditch et. Nihil anim
+							keffiyeh helvetica, craft beer labore wes anderson cred nesciunt
+							sapiente ea proident. Ad vegan excepteur butcher vice lomo.
+							Leggings occaecat craft beer farm-to-table, raw denim aesthetic
+							synth nesciunt you probably haven’t heard of them accusamus
+							labore sustainable VHS.</div>
+					</div>
+				</div>
+				<div class="accordion-group">
+					<div class="accordion-heading">
+						<a class="accordion-toggle" data-toggle="collapse"
+							data-parent="#accordion2" href="#collapseThree"> Collapsible
+							Group Item #3 </a>
+					</div>
+					<div id="collapseThree" class="accordion-body collapse">
+						<div class="accordion-inner">Anim pariatur cliche
+							reprehenderit, enim eiusmod high life accusamus terry richardson
+							ad squid. 3 wolf moon officia aute, non cupidatat skateboard
+							dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch
+							3 wolf moon tempor, sunt aliqua put a bird on it squid
+							single-origin coffee nulla assumenda shoreditch et. Nihil anim
+							keffiyeh helvetica, craft beer labore wes anderson cred nesciunt
+							sapiente ea proident. Ad vegan excepteur butcher vice lomo.
+							Leggings occaecat craft beer farm-to-table, raw denim aesthetic
+							synth nesciunt you probably haven’t heard of them accusamus
+							labore sustainable VHS.</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<form class="form-horizontal">
+			<div class="control-group">
+				<button type="button" name="btn_register"
+					class="btn btn-primary btn-block">저장</button>
+			</div>
+
+			<div class="control-group">
+				<button type="button" name="btn_cancle"
+					class="btn btn-danger btn-block">취소</button>
+			</div>
+		</form>
+	</div>
+
+	<!---------------------------------------- 예제 코드 끝 ---------------------------------------->
+
+	<script type='text/javascript'>
+			$(function() {
+				function ifrm_resize(height) {
+					var id = 'preview_prv_7';
+					var example1 = window.parent.document.getElementById(id);
+					$(example1).css({
+						height : height + 30
+					});
+				}
+
+				var height = $('body').height();
+				ifrm_resize(height);
+
+				$(window.parent).on('resize', function() {
+					var height = $('body').height();
+					ifrm_resize(height);
+				});
+
+				// 초기 회의록 화면 보이기
+				//setTimeout(function() {
+				//	$('#intro').hide();
+				//	$('#main').show();
+				//}, 3000);
+
+				$('div.lists[name=ago] ul li').on('click', function() {
+					//alert($( this ).attr( 'uuid' ));
+					$('div.container').hide();
+					$('div.content').show();
+				});
+
+				$('div.lists[name=future] ul li').on('click', function() {
+					//alert("test2");
+				});
+
+				function setPushTypeSC(){
+				}
+				function errorCallback(){
+				}
+				$( 'div.container button[name=btn_typealert]' ).click( function () {
+					navigator.push.setDisplayType(setPushTypeSC,errorCallback,"TYPE_ALERT");
+					//navigator.vibrate(1000);
+				} );
+				$( 'div.container button[name=btn_typebanner]' ).click( function () {
+					navigator.push.setDisplayType(setPushTypeSC,errorCallback,"TYPE_BANNER");
+					//navigator.vibrate(1000);
+				} );
+				
+			});
+		</script>
+</body>
+</html>
